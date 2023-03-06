@@ -6,13 +6,14 @@ import {
   hashPassword,
 } from './authentication.service';
 import initializeDatabaseClient from '../../../core/database/databaseClient';
+import { User } from '../models/user.model';
 
 const findAllUsers = async (client?: Client) => {
   const databaseClient = client ?? (await initializeDatabaseClient());
 
   const usersRes = await databaseClient.query('SELECT * FROM users');
 
-  databaseClient.end();
+  if (!client) databaseClient.end();
 
   return usersRes.rows;
 };
@@ -25,7 +26,7 @@ const findUserById = async (id: string, client?: Client) => {
     [id]
   );
 
-  databaseClient.end();
+  if (!client) databaseClient.end();
 
   return userRes.rows[0];
 };
@@ -38,13 +39,14 @@ const findUserByEmail = async (email: string, client?: Client) => {
     [email]
   );
 
-  databaseClient.end();
+  if (!client) databaseClient.end();
 
   return userRes.rows[0];
 };
 
-const createUser = async (email: string, password: string, client?: Client) => {
+const createUser = async (user: User, client?: Client) => {
   const databaseClient = client ?? (await initializeDatabaseClient());
+  const { email, password } = user;
   const hashedPassword = await hashPassword(password);
 
   const userExists = await findUserByEmail(email, databaseClient);
@@ -58,19 +60,20 @@ const createUser = async (email: string, password: string, client?: Client) => {
     [email, hashedPassword]
   );
 
-  databaseClient.end();
+  if (!client) databaseClient.end();
 
   return userRes.rows[0];
 };
 
-const loginUser = async (email: string, password: string) => {
-  const user = await findUserByEmail(email);
+const loginUser = async (user: User) => {
+  const { email, password } = user;
+  const foundUser = await findUserByEmail(email);
 
-  if (!user) {
+  if (!foundUser) {
     return null;
   }
 
-  const validPassword = await comparePasswords(password, user.password);
+  const validPassword = await comparePasswords(password, foundUser.password);
 
   if (!validPassword) {
     return null;

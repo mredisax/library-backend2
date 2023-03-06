@@ -1,4 +1,5 @@
 import express from 'express';
+import { User } from '../models/user.model';
 
 import { createUser, findAllUsers, loginUser } from '../services/user.service';
 
@@ -15,7 +16,9 @@ router.get('/', async (_, res) => {
 router.post('/register', async (req, res) => {
   const { email, password } = req.body;
 
-  const createdUser = await createUser(email, password);
+  const user = new User(email, password);
+
+  const createdUser = await createUser(user);
 
   if (!createdUser) {
     return res.status(400).send('User already exists');
@@ -27,7 +30,9 @@ router.post('/register', async (req, res) => {
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
-  const token = await loginUser(email, password);
+  const user = new User(email, password);
+
+  const token = await loginUser(user);
 
   res.status(200).send({ token });
 });
