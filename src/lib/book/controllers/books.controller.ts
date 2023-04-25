@@ -1,6 +1,6 @@
 import express from 'express';
 import {Book} from '../models/book.model';
-import {findBooksByCategory, createBook, findAllBooks} from '../services/books.service';
+import {findBooksByCategory, createBook, findAllBooks, findBookById, findBooksByTitle} from '../services/books.service';
 
 //import { createUser, findAllUsers, loginUser } from '../services/user.service';
 
@@ -31,6 +31,28 @@ router.get('/category', async (req, res) => {
 
   res.status(200).send(books);
 });
+
+router.get('/id', async (req, res) => {
+  const { id } = req.body;
+  if(!id){
+    return res.status(400).send('Id not provided');
+  }
+  const book = await findBookById(id);
+
+  res.status(200).send(book);
+});
+
+router.get('/title', async (req, res) => {
+  const { title } = req.body;
+  if(!title){
+    return res.status(400).send('Title not provided');
+  }
+  const books = await findBooksByTitle(title);
+
+  res.status(200).send(books);
+});
+
+
 
 
 router.post('/add', async (req, res) => {

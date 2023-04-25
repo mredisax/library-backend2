@@ -21,7 +21,7 @@ const findBookById = async (id: string, client?: Client) => {
 }
 
 //find book by title
-const findBookByTitle = async (title: string, client?: Client) => {
+const findBooksByTitle = async (title: string, client?: Client) => {
     const databaseClient = client ?? (await initializeDatabaseClient());
     const bookRes = await databaseClient.query('SELECT * FROM books WHERE title LIKE $1', [title]);
     
@@ -56,4 +56,4 @@ const createBook = async (book: Book, client?: Client) => {
     return bookRes.rows[0];
 }
 
-export { findAllBooks, findBookById, findBookByTitle, findBooksByCategory, findBooksByAuthor, createBook };
+export { findAllBooks, findBookById, findBooksByTitle, findBooksByCategory, findBooksByAuthor, createBook };
