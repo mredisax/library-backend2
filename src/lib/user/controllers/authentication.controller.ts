@@ -14,9 +14,13 @@ router.get('/', async (_, res) => {
 });
 
 router.post('/register', async (req, res) => {
-  const { email, password } = req.body;
+  const { email, password, name, lastname, phone, address_id } = req.body;
 
-  const user = new User(email, password);
+  if (!email || !password || !name || !lastname || !address_id) {
+    return res.status(400).send('Missing required fields');
+  }
+
+  const user = new User(email, password, name, lastname, phone, address_id);
 
   const createdUser = await createUser(user);
 
@@ -29,6 +33,10 @@ router.post('/register', async (req, res) => {
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res.status(400).send('Missing required fields');
+  }
 
   const user = new User(email, password);
 
