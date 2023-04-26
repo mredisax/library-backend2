@@ -2,7 +2,7 @@ import { Client } from 'pg';
 import { Author } from '../models/author.model';
 import initializeDatabaseClient from '../../../core/database/databaseClient';
 
-//find all authors
+
 const findAllAuthors = async (client?: Client) => {
     const databaseClient = client ?? (await initializeDatabaseClient());
     const authorsRes = await databaseClient.query('SELECT * FROM authors');
@@ -11,7 +11,7 @@ const findAllAuthors = async (client?: Client) => {
     return authorsRes.rows;
 }
 
-//add author
+
 const addAuthor = async (author: Author, client?: Client) => {
     const databaseClient = client ?? (await initializeDatabaseClient());
     const { first_name, last_name } = author;

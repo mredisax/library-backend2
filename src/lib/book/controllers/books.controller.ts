@@ -1,16 +1,12 @@
 import express from 'express';
-import {Book} from '../models/book.model';
-import {findBooksByCategory, createBook, findAllBooks, findBookById, findBooksByTitle} from '../services/books.service';
-
-//import { createUser, findAllUsers, loginUser } from '../services/user.service';
+import { Book } from '../models/book.model';
+import { findBooksByCategory, createBook, findAllBooks, findBookById, findBooksByTitle } from '../services/books.service';
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-//check if in request body is category
   const { category } = req.body;
   if(category){
-    //if yes, return all books from this category
     console.log("hi");
     const books = await findAllBooks();
     if(books){

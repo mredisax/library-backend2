@@ -11,7 +11,6 @@ const findAllBooks = async (client?: Client) => {
     return booksRes.rows;
 }
 
-//find book by id
 const findBookById = async (id: string, client?: Client) => {
     const databaseClient = client ?? (await initializeDatabaseClient());
     const bookRes = await databaseClient.query('SELECT * FROM books WHERE id = $1 LIMIT 30 OFFSET $2', [id, 0]);
@@ -20,7 +19,6 @@ const findBookById = async (id: string, client?: Client) => {
     return bookRes.rows[0];
 }
 
-//find book by title
 const findBooksByTitle = async (title: string, client?: Client) => {
     const databaseClient = client ?? (await initializeDatabaseClient());
     const bookRes = await databaseClient.query('SELECT * FROM books WHERE title LIKE $1', [title]);
@@ -29,7 +27,6 @@ const findBooksByTitle = async (title: string, client?: Client) => {
     return bookRes.rows[0];
 }
 
-//find books by category
 const findBooksByCategory = async (category: string, client?: Client) => {
     const databaseClient = client ?? (await initializeDatabaseClient());
     const booksRes = await databaseClient.query('SELECT * FROM books WHERE category = $1', [category]);
@@ -38,7 +35,6 @@ const findBooksByCategory = async (category: string, client?: Client) => {
     return booksRes.rows;
 }
 
-//find books by author
 const findBooksByAuthor = async (author_id: number, client?: Client) => {
     const databaseClient = client ?? (await initializeDatabaseClient());
     const booksRes = await databaseClient.query('SELECT * FROM books WHERE author_id = $1', [author_id]);
@@ -47,7 +43,6 @@ const findBooksByAuthor = async (author_id: number, client?: Client) => {
     return booksRes.rows;
 }
 
-//create book
 const createBook = async (book: Book, client?: Client) => {
     const databaseClient = client ?? (await initializeDatabaseClient());
     const { title, isbn, author_id, year, category } = book;
