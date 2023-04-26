@@ -48,9 +48,6 @@ router.get('/title', async (req, res) => {
   res.status(200).send(books);
 });
 
-
-
-
 router.post('/add', async (req, res) => {
   const { title, isbn, author_id, year, category } = req.body;
   const book = new Book(title, isbn, author_id, year, category);
@@ -60,6 +57,5 @@ router.post('/add', async (req, res) => {
   }
   res.status(200).send(createdBook);
 });
-
 
 export default router;
