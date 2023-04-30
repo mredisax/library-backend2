@@ -1,0 +1,20 @@
+version: "3.2"
+services:
+  app:
+    container_name: piwing
+    restart: always
+    build: .
+    env_file: 
+      - .env
+    ports:
+      - "2137:3000"
+    links:
+      - mongo
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    ports:
+      - "27017:27017"
+    env_file:
+      - .env
