@@ -1,21 +1,17 @@
 import express from 'express';
 import { Book } from '../models/book.model';
 import { findBooksByCategory, createBook, findAllBooks, findBookById, findBooksByTitle } from '../services/books.service';
+import { findAuthorById } from '../services/authors.service';
 
 const router = express.Router();
 
 router.get('/', async (req, res) => {
-  const { category } = req.body;
-  if(category){
-    console.log("hi");
     const books = await findAllBooks();
     if(books){
       res.status(200).send(books);
     }else{
       res.status(400).send('No books found');
     }
-    
-  }
 });
 
 router.get('/category', async (req, res) => {
@@ -28,13 +24,15 @@ router.get('/category', async (req, res) => {
   res.status(200).send(books);
 });
 
-router.get('/id', async (req, res) => {
-  const { id } = req.body;
+router.get('/id/:id', async (req, res) => {
+  //const { id } = req.body;
+  const { id } = req.params;
   if(!id){
     return res.status(400).send('Id not provided');
   }
   const book = await findBookById(id);
-
+  const author = await findAuthorById(book.author_id);
+  book.author = author;
   res.status(200).send(book);
 });
 

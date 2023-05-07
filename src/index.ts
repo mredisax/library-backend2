@@ -12,6 +12,15 @@ dotenv.config();
 const app: Express = express();
 const port = process.env.PORT || 2137;
 
+app.use((_, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET, POST');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  
+  next();
+});
+
+
 app.use(express.json());
 
 app.get('/', (_, res) => {
