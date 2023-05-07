@@ -46,7 +46,7 @@ const findUserByEmail = async (email: string, client?: Client) => {
 
 const createUser = async (user: User, client?: Client) => {
   const databaseClient = client ?? (await initializeDatabaseClient());
-  const { email, password } = user;
+  const { email, password, name, lastname, address_id } = user;
   const hashedPassword = await hashPassword(password);
 
   const userExists = await findUserByEmail(email, databaseClient);
@@ -56,8 +56,8 @@ const createUser = async (user: User, client?: Client) => {
   }
 
   const userRes = await databaseClient.query(
-    'INSERT INTO users (email, password) VALUES ($1, $2) RETURNING *',
-    [email, hashedPassword]
+    'INSERT INTO users (email, password, name, lastname, address_id) VALUES ($1, $2) RETURNING *',
+    [email, hashedPassword, name, lastname, address_id]
   );
 
   if (!client) databaseClient.end();
