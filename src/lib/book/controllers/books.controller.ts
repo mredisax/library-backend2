@@ -2,7 +2,7 @@ import express from 'express';
 import { Book } from '../models/book.model';
 import { findBooksByCategory, createBook, findAllBooks, findBookById, findBooksByTitle } from '../services/books.service';
 import { findAuthorById } from '../services/authors.service';
-
+import { findReservationByBookId } from '../../borrow/services/reservation.service';
 const router = express.Router();
 
 router.get('/', async (req, res) => {
@@ -32,7 +32,10 @@ router.get('/id/:id', async (req, res) => {
   }
   const book = await findBookById(id);
   const author = await findAuthorById(book.author_id);
+  const isReserved = await findReservationByBookId(id);
+
   book.author = author;
+  book.isReserved = isReserved ? true : false;
   res.status(200).send(book);
 });
 
