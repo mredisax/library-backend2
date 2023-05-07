@@ -1,6 +1,6 @@
 import express from 'express';
 import { Author } from '../models/author.model';
-import { addAuthor, findAllAuthors } from '../services/authors.service';
+import { addAuthor, findAllAuthors, findAuthorById } from '../services/authors.service';
 
 const router = express.Router();
 
@@ -10,6 +10,19 @@ router.get('/', async (req, res) => {
     res.status(200).send(authors);
   }else{
     res.status(400).send('No authors found');
+  }
+});
+
+router.get('/id', async (req, res) => {
+  const { id } = req.body;
+  if(!id){
+    return res.status(400).send('Id not provided');
+  }
+  const author = await findAuthorById(id);
+  if(author){
+    res.status(200).send(author);
+  }else{
+    res.status(400).send('No author found');
   }
 });
 

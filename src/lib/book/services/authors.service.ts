@@ -11,6 +11,14 @@ const findAllAuthors = async (client?: Client) => {
     return authorsRes.rows;
 }
 
+const findAuthorById = async (id: number, client?: Client) => {
+    const databaseClient = client ?? (await initializeDatabaseClient());
+    const authorRes = await databaseClient.query('SELECT * FROM authors WHERE id = $1', [id]);
+    if(!client) databaseClient.end();
+    return authorRes.rows[0];
+}
+
+
 
 const addAuthor = async (author: Author, client?: Client) => {
     const databaseClient = client ?? (await initializeDatabaseClient());
@@ -20,4 +28,4 @@ const addAuthor = async (author: Author, client?: Client) => {
     return authorRes.rows[0];
 }
 
-export { findAllAuthors, addAuthor };
+export { findAllAuthors, addAuthor, findAuthorById };
