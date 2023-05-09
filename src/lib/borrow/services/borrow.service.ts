@@ -47,7 +47,8 @@ const deleteBorrow = async (id: string, client?: Client) => {
     const databaseClient = client ?? (await initializeDatabaseClient());
     const borrowRes = await databaseClient.query('DELETE FROM booking WHERE id = $1', [id]);
     if (!client) databaseClient.end();
-    return borrowRes.rows[0];
+
+    return borrowRes.rowCount > 0;
 }
 
 

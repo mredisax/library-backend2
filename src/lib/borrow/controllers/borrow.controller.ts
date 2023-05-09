@@ -9,8 +9,8 @@ import {
 } from '../services/borrow.service';
 const router = express.Router();
 
-router.get('/user', async (req, res) => {
-  const { user_id } = req.body;
+router.get('/user/:user_id', async (req, res) => {
+  const { user_id } = req.params;
   if (!user_id) {
     return res.status(400).send('User id not provided');
   }
@@ -31,8 +31,9 @@ router.post('/', async (req, res) => {
 });
 
 router.delete('/', async (req, res) => {
-  const { book_id } = req.body;
-  const borrow = await deleteBorrow(book_id);
+  const { borrow_id } = req.body;
+  const borrow = await deleteBorrow(borrow_id);
+  console.log(borrow);
   if (!borrow) {
     return res.status(400).send('Borrow does not exist');
   }
@@ -40,10 +41,10 @@ router.delete('/', async (req, res) => {
 });
 
 router.put('/extend', async (req, res) => {
-  const { book_id } = req.body;
-  const borrow = await extendBorrow(book_id);
+  const { borrow_id } = req.body;
+  const borrow = await extendBorrow(borrow_id);
   if (!borrow) {
-    return res.status(400).send('Borrow does not exist');
+    return res.status(400).send('Borrow is imposible to extend');
   }
   res.status(200).send(borrow);
 });

@@ -3,18 +3,20 @@ import { createReservation, findReservationByBookId, findReservationsByUserId } 
 const router = express.Router();
 
 
-router.get('/book', async (req, res) => {
-    const { book_id } = req.body;
+router.get('/book/:book_id', async (req, res) => {
+    const { book_id } = req.params;
     if(!book_id){
         return res.status(400).send('Book id not provided');
     }
     const reservation = await findReservationByBookId(book_id);
-    
+    if(!reservation){
+        return res.status(400).send('No reservation found');
+    }
     res.status(200).send(reservation);
 });
 
-router.get('/user', async (req, res) => {
-    const { user_id } = req.body;
+router.get('/user/:user_id', async (req, res) => {
+    const { user_id } = req.params;
     if(!user_id){
         return res.status(400).send('User id not provided');
     }
