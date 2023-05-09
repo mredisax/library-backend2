@@ -1,21 +1,30 @@
 export class User {
-  id?: string;
+  id?: number;
   email: string;
   password: string;
-  first_name?: string;
-  last_name?: string;
+  name?: string;
+  lastname?: string;
+  phone?: string;
+  address_id?: number;
+  is_admin?: boolean;
 
   constructor(
     email: string,
     password: string,
-    id?: string,
-    first_name?: string,
-    last_name?: string
+    name?: string,
+    lastname?: string,
+    phone?: string,
+    address_id?: number,
+    is_admin?: boolean,
+    id?: number
   ) {
     this.id = id;
     this.email = email;
     this.password = password;
-    this.first_name = first_name;
-    this.last_name = last_name;
+    this.name = name;
+    this.lastname = lastname;
+    this.phone = phone;
+    this.address_id = address_id;
+    this.is_admin = is_admin;
   }
 }
