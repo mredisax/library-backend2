@@ -14,8 +14,8 @@ router.get('/', async (req, res) => {
     }
 });
 
-router.get('/category', async (req, res) => {
-  const { category } = req.body;
+router.get('/category/:category', async (req, res) => {
+  const { category } = req.params;
   if(!category){
     return res.status(400).send('Category not provided');
   }
@@ -25,7 +25,6 @@ router.get('/category', async (req, res) => {
 });
 
 router.get('/id/:id', async (req, res) => {
-  //const { id } = req.body;
   const { id } = req.params;
   if(!id){
     return res.status(400).send('Id not provided');
@@ -36,8 +35,8 @@ router.get('/id/:id', async (req, res) => {
   res.status(200).send(book);
 });
 
-router.get('/title', async (req, res) => {
-  const { title } = req.body;
+router.get('/title/:title', async (req, res) => {
+  const { title } = req.params;
   if(!title){
     return res.status(400).send('Title not provided');
   }
