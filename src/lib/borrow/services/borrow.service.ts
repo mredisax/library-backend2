@@ -51,7 +51,6 @@ const deleteBorrow = async (id: string, client?: Client) => {
     return borrowRes.rowCount > 0;
 }
 
-
 const extendBorrow = async (id: string, client?: Client) => {
     const borrow = await findBorrowByBookId(id);
     const reservation = await findReservationByBookId(borrow.book_id);
