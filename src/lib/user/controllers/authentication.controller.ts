@@ -6,9 +6,7 @@ import { createUser, findAllUsers, loginUser } from '../services/user.service';
 const router = express.Router();
 
 router.get('/', async (_, res) => {
-  const users = await findAllUsers();
-
-  console.log(users);
+  // /const users = await findAllUsers();
 
   res.send('Hello Authentication World!');
 });
