@@ -6,7 +6,7 @@ import booksController from './lib/book/controllers/books.controller';
 import authorsController from './lib/book/controllers/author.controller';
 import reservationController from './lib/borrow/controllers/reservation.controller';
 import borrowController from './lib/borrow/controllers/borrow.controller';
-
+import usersController from './lib/user/controllers/users.controller';
 dotenv.config();
 
 const app: Express = express();
@@ -28,6 +28,7 @@ app.get('/', (_, res) => {
 });
 
 app.use('/auth', authenticationController);
+app.use('/users', usersController);
 
 app.use('/books', booksController);
 app.use("/authors", authorsController);
