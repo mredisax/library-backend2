@@ -21,8 +21,8 @@ const findBookById = async (id: string, client?: Client) => {
 
 const findBooksByTitle = async (title: string, client?: Client) => {
     const databaseClient = client ?? (await initializeDatabaseClient());
-    const bookRes = await databaseClient.query('SELECT * FROM books WHERE title LIKE $1', [title]);
-    
+    const bookRes = await databaseClient.query('SELECT * FROM books WHERE title LIKE $1', ['%' + title + '%']);
+
     if (!client) databaseClient.end();
     return bookRes.rows[0];
 }
