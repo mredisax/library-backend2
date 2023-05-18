@@ -16,10 +16,9 @@ app.use((_, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET, POST');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
-  
+
   next();
 });
-
 
 app.use(express.json());
 
@@ -31,9 +30,9 @@ app.use('/auth', authenticationController);
 app.use('/users', usersController);
 
 app.use('/books', booksController);
-app.use("/authors", authorsController);
-app.use("/reservation", reservationController);
-app.use("/borrow", borrowController);
+app.use('/authors', authorsController);
+app.use('/reservation', reservationController);
+app.use('/borrow', borrowController);
 
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

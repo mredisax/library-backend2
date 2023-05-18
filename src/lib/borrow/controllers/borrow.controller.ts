@@ -6,8 +6,18 @@ import {
   extendBorrow,
   deleteBorrow,
   findBorrowByBookId,
+  findBorrows,
 } from '../services/borrow.service';
 const router = express.Router();
+
+router.get('/', async (req, res) => {
+  const borrows = await findBorrows();
+  if (borrows) {
+    res.status(200).send(borrows);
+  } else {
+    res.status(400).send('No borrows found');
+  }
+});
 
 router.get('/user/:user_id', async (req, res) => {
   const { user_id } = req.params;
@@ -30,7 +40,7 @@ router.post('/', async (req, res) => {
   res.status(200).send(borrow);
 });
 
-router.delete('/', async (req, res) => {
+router.post('/delete-borrow', async (req, res) => {
   const { borrow_id } = req.body;
   const borrow = await deleteBorrow(borrow_id);
   console.log(borrow);
