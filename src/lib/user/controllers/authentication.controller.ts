@@ -17,14 +17,17 @@ router.post('/register', async (req, res) => {
   if (!email || !password || !name || !lastname || !address_id) {
     return res.status(400).send('Missing required fields');
   }
+  console.log(req.body);
 
   const user = new User(email, password, name, lastname, phone, address_id);
 
   const createdUser = await createUser(user);
+  console.log(req.body);
 
   if (!createdUser) {
     return res.status(400).send('User already exists');
   }
+  console.log(req.body);
 
   res.status(200).send(createdUser);
 });
@@ -38,9 +41,15 @@ router.post('/login', async (req, res) => {
 
   const user = new User(email, password);
 
-  const token = await loginUser(user);
+  const loggedUser = await loginUser(user);
 
-  res.status(200).send({ token });
+  if (!loggedUser) {
+    return res.status(400).send('User does not exist');
+  } else {
+    loggedUser.user.password = '';
+  }
+
+  res.status(200).send(loggedUser);
 });
 
 export default router;
