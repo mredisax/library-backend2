@@ -56,7 +56,7 @@ const createUser = async (user: User, client?: Client) => {
   }
 
   const userRes = await databaseClient.query(
-    'INSERT INTO users (email, password, name, lastname, address_id) VALUES ($1, $2) RETURNING *',
+    'INSERT INTO users (email, password, name, lastname, address_id) VALUES ($1, $2, $3, $4, $5) RETURNING *',
     [email, hashedPassword, name, lastname, address_id]
   );
 
@@ -67,9 +67,10 @@ const createUser = async (user: User, client?: Client) => {
 
 const deleteUser = async (id: string, client?: Client) => {
   const databaseClient = client ?? (await initializeDatabaseClient());
-  const userRes = await databaseClient.query('DELETE FROM users WHERE id = $1', [
-    id,
-  ]);
+  const userRes = await databaseClient.query(
+    'DELETE FROM users WHERE id = $1',
+    [id]
+  );
   if (!client) databaseClient.end();
   return userRes.rowCount > 0;
 };
@@ -78,9 +79,10 @@ const updateUser = async (user: User, client?: Client) => {
   const databaseClient = client ?? (await initializeDatabaseClient());
   const { email, name, lastname, phone, id } = user;
 
-  const userRes = await databaseClient.query('UPDATE users SET email = $1, name = $2, lastname = $3, phone=$4 WHERE id = $5', [
-    email, name, lastname, phone, id
-  ]);
+  const userRes = await databaseClient.query(
+    'UPDATE users SET email = $1, name = $2, lastname = $3, phone=$4 WHERE id = $5',
+    [email, name, lastname, phone, id]
+  );
   if (!client) databaseClient.end();
   return userRes.rowCount > 0;
 };
@@ -89,16 +91,19 @@ const updatePassword = async (user: User, client?: Client) => {
   const databaseClient = client ?? (await initializeDatabaseClient());
   const { password, id } = user;
   const hashedPassword = await hashPassword(password);
-  const userRes = await databaseClient.query('UPDATE users SET password = $1 WHERE id = $2', [
-    hashedPassword, id
-  ]);
+  const userRes = await databaseClient.query(
+    'UPDATE users SET password = $1 WHERE id = $2',
+    [hashedPassword, id]
+  );
   if (!client) databaseClient.end();
   return userRes.rowCount > 0;
 };
 
-const loginUser = async (user: User) => {
+const loginUser = async (
+  user: User
+): Promise<{ token: string; user: User } | null> => {
   const { email, password } = user;
-  const foundUser = await findUserByEmail(email);
+  const foundUser: User = await findUserByEmail(email);
 
   if (!foundUser) {
     return null;
@@ -112,7 +117,16 @@ const loginUser = async (user: User) => {
 
   const token = generateToken(user);
 
-  return token;
+  return { token, user: foundUser };
 };
 
-export { findAllUsers, findUserById, findUserByEmail, createUser, loginUser, deleteUser, updateUser, updatePassword };
+export {
+  findAllUsers,
+  findUserById,
+  findUserByEmail,
+  createUser,
+  loginUser,
+  deleteUser,
+  updateUser,
+  updatePassword,
+};
