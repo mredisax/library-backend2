@@ -14,7 +14,7 @@ const port = process.env.PORT || 2137;
 
 app.use((_, res, next) => {
   res.header('Access-Control-Allow-Origin', '*');
-  res.header('Access-Control-Allow-Methods', 'GET, POST');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, DELETE');
   res.header('Access-Control-Allow-Headers', 'Content-Type');
 
   next();
