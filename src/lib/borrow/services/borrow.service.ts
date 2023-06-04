@@ -54,13 +54,11 @@ const createBorrow = async (
 
   const now = new Date();
 
-  let checkoutDate = now; //prevent from override by reference
   let returnDate = new Date(now.setMonth(now.getMonth() + 1));
-  let returnDateStr = returnDate.toDateString().split('T')[0];
   const databaseClient = client ?? (await initializeDatabaseClient());
   const borrowRes = await databaseClient.query(
     'INSERT INTO booking (book_id, user_id, return_date) VALUES ($1, $2, $3) RETURNING *',
-    [book_id, user_id, returnDateStr]
+    [book_id, user_id, returnDate]
   );
   if (!client) databaseClient.end();
   return borrowRes.rows[0];
