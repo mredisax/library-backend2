@@ -1,0 +1,10 @@
+version: "3.2"
+services:
+  app:
+    container_name: library
+    restart: always
+    build: .
+    env_file: 
+      - .env
+    ports:
+      - "2137:3000"
