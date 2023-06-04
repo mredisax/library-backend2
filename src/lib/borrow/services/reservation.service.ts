@@ -52,11 +52,10 @@ const createReservation = async (
 
   const now = new Date();
   const reservationSpan = new Date(now.setMonth(now.getMonth() + 1));
-  const reservationSpanStr = reservationSpan.toDateString().split('T')[0];
   const databaseClient = client ?? (await initializeDatabaseClient());
   const reservationRes = await databaseClient.query(
     'INSERT INTO reservations (book_id, user_id, reservation_span) VALUES ($1, $2, $3) RETURNING *',
-    [book_id, user_id, reservationSpanStr]
+    [book_id, user_id, reservationSpan]
   );
   if (!client) databaseClient.end();
   return reservationRes.rows[0];
